@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Application.Commands;
+﻿using Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker;
+using Ambev.DeveloperEvaluation.Application.Commands;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;

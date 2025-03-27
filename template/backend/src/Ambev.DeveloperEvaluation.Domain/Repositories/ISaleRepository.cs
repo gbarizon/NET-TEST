@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
 {
     public interface ISaleRepository
     {
-
+        Task AddAsync(Sale sale);
+        Task<Sale?> GetByIdAsync(Guid saleId);
+        Task<IEnumerable<Sale>> GetAllAsync(int page, int size);
+        Task UpdateAsync(Sale sale);
     }
 }

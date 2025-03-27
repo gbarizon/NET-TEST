@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Application.Commands;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
