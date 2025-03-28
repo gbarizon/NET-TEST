@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker;
-using Ambev.DeveloperEvaluation.Application.Commands;
+using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Handlers
+namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 {
     public class CreateSaleHandler
     {
@@ -24,6 +24,8 @@ namespace Ambev.DeveloperEvaluation.Application.Handlers
 
         public async Task<Sale> HandleAsync(CreateSaleCommand command)
         {
+            CreateSaleValidator.Validate(command.Items);
+
             var sale = new Sale
             {
                 Id = Guid.NewGuid(),
@@ -37,14 +39,7 @@ namespace Ambev.DeveloperEvaluation.Application.Handlers
 
             foreach (var itemDto in command.Items)
             {
-                if (itemDto.Quantity > 20)
-                    throw new InvalidOperationException("Cannot sell more than 20 items per product.");
-
-                decimal discount = 0;
-                if (itemDto.Quantity >= 10)
-                    discount = itemDto.UnitPrice * itemDto.Quantity * 0.20m;
-                else if (itemDto.Quantity >= 4)
-                    discount = itemDto.UnitPrice * itemDto.Quantity * 0.10m;
+                decimal discount = CalculateDiscount(itemDto.Quantity, itemDto.UnitPrice);
 
                 sale.Items.Add(new SaleItem
                 {
@@ -61,6 +56,15 @@ namespace Ambev.DeveloperEvaluation.Application.Handlers
 
             return sale;
         }
-    }
 
+        private decimal CalculateDiscount(int quantity, decimal unitPrice)
+        {
+            if (quantity >= 10)
+                return unitPrice * quantity * 0.20m;
+            if (quantity >= 4)
+                return unitPrice * quantity * 0.10m;
+
+            return 0m;
+        }        
+    }
 }

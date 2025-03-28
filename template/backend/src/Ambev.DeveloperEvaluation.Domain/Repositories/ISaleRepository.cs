@@ -13,5 +13,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         Task<Sale?> GetByIdAsync(Guid saleId);
         Task<IEnumerable<Sale>> GetAllAsync(int page, int size);
         Task UpdateAsync(Sale sale);
+        Task<int> GetTotalCountAsync();
     }
 }

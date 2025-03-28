@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Dtos
+namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 {
     public class CreateSaleItemDto
     {

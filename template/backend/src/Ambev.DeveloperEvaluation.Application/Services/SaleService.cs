@@ -1,5 +1,8 @@
 ﻿using Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker;
-using Ambev.DeveloperEvaluation.Application.Commands;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.Application.Sales.GetSales;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
@@ -24,71 +27,31 @@ namespace Ambev.DeveloperEvaluation.Application.Services
 
         public async Task<Sale> CreateSaleAsync(CreateSaleCommand command)
         {
-            var sale = new Sale
-            {
-                Id = Guid.NewGuid(),
-                Date = DateTime.UtcNow,
-                CustomerId = command.CustomerId,
-                CustomerName = command.CustomerName,
-                BranchId = command.BranchId,
-                BranchName = command.BranchName,
-                Cancelled = false
-            };
-
-            foreach (var itemDto in command.Items)
-            {
-                if (itemDto.Quantity > 20)
-                    throw new InvalidOperationException("It is not allowed to sell more than 20 items of the same product.");
-
-                decimal discount = 0;
-                if (itemDto.Quantity >= 10)
-                    discount = itemDto.UnitPrice * itemDto.Quantity * 0.20m;
-                else if (itemDto.Quantity >= 4)
-                    discount = itemDto.UnitPrice * itemDto.Quantity * 0.10m;
-
-                sale.Items.Add(new SaleItem
-                {
-                    ProductId = itemDto.ProductId,
-                    ProductName = itemDto.ProductName,
-                    Quantity = itemDto.Quantity,
-                    UnitPrice = itemDto.UnitPrice,
-                    Discount = discount
-                });
-            }
-
-            await _repository.AddAsync(sale);
-            await _messageBroker.PublishAsync(new SaleCreatedEvent(sale));
-
-            return sale;
+            var handler = new CreateSaleHandler(_repository, _messageBroker);
+            return await handler.HandleAsync(command);
         }
 
-        public async Task<Sale> GetSaleAsync(Guid id)
+        public async Task<GetSaleResult?> GetSaleAsync(Guid id)
         {
-            var sale = await _repository.GetByIdAsync(id);
-            if (sale == null)
-                throw new InvalidOperationException("Sale not found!");
-
-            return sale;
+            var handler = new GetSaleHandler(_repository);
+            return await handler.HandleAsync(new GetSaleQuery(id));
         }
 
         public async Task<IEnumerable<Sale>> GetSalesAsync(int page, int size)
         {
-            return await _repository.GetAllAsync(page, size);
+            var handler = new GetSalesHandler(_repository);
+            var result = await handler.HandleAsync(new GetSalesQuery(page, size));
+            return result.Sales;
         }
 
-        public async Task<Sale> CancelSaleAsync(Guid id)
+        public async Task<CancelSaleResult> CancelSaleAsync(Guid id)
         {
-            var sale = await _repository.GetByIdAsync(id);
-
-            if (sale == null)
-                throw new InvalidOperationException("Sale not found!");
-
-            sale.Cancelled = true;
-
-            await _repository.UpdateAsync(sale);
-            await _messageBroker.PublishAsync(new SaleCancelledEvent(sale.Id));
-
-            return sale;
+            var handler = new CancelSaleHandler(_repository, _messageBroker);
+            return await handler.HandleAsync(new CancelSaleCommand(id));
+        }
+        public async Task<int> GetTotalSalesCountAsync()
+        {
+            return await _repository.GetTotalCountAsync();
         }
     }
 }

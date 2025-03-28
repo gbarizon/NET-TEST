@@ -46,6 +46,9 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             _dbContext.Set<Sale>().Update(sale);
             await _dbContext.SaveChangesAsync();
         }
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _dbContext.Sales.CountAsync();
+        }
     }
-
 }

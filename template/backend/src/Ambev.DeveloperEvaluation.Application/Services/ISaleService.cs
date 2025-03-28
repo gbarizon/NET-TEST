@@ -1,4 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Application.Commands;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,9 @@ namespace Ambev.DeveloperEvaluation.Application.Services
     public interface ISaleService
     {
         Task<Sale> CreateSaleAsync(CreateSaleCommand command);
-        Task<Sale> GetSaleAsync(Guid id);
+        Task<GetSaleResult?> GetSaleAsync(Guid id);
         Task<IEnumerable<Sale>> GetSalesAsync(int page, int size);
-        Task<Sale> CancelSaleAsync(Guid id);
+        Task<CancelSaleResult> CancelSaleAsync(Guid id);
+        Task<int> GetTotalSalesCountAsync();
     }
 }
