@@ -30,12 +30,23 @@ public class Program
             builder.AddBasicHealthChecks();
             builder.Services.AddSwaggerGen();
 
+            // Debug: mostra a string de conexão definida (deve vir da variável de ambiente)
+            var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+            Console.WriteLine($"[DEBUG] Connection string: {conn}");
+
             builder.Services.AddDbContext<DefaultContext>(options =>
-                options.UseNpgsql(
-                    builder.Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")                    
-                )
-            );
+            options.UseNpgsql(
+                conn,
+                x => x.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
+            )
+        );
+
+            //builder.Services.AddDbContext<DefaultContext>(options =>
+            //    options.UseNpgsql(
+            //        builder.Configuration.GetConnectionString("DefaultConnection"),
+            //        b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")                    
+            //    )
+            //);
 
             builder.Services.AddJwtAuthentication(builder.Configuration);
 

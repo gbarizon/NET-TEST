@@ -25,11 +25,15 @@ RUN dotnet publish "./Ambev.DeveloperEvaluation.WebApi.csproj" -c $BUILD_CONFIGU
 
 FROM base AS final
 WORKDIR /app
-ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ConnectionStrings__DefaultConnection="Host=ambev.developerevaluation.database;Port=5432;Database=developer_evaluation;Username=developer;Password=ev@luAt10n"
+COPY . .
+RUN apt-get update && apt-get install -y netcat-openbsd
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
-COPY . .
+
+ENV ASPNETCORE_ENVIRONMENT=Development
+#ENV ConnectionStrings__DefaultConnection="Host=ambev.developerevaluation.database;Port=5432;Database=developer_evaluation;Username=developer;Password=ev@luAt10n"
+
+#COPY . .
 WORKDIR /app/src/Ambev.DeveloperEvaluation.WebApi
 COPY ../../entrypoint.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
