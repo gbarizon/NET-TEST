@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker;
+﻿using Ambev.DeveloperEvaluation.MessageBroker;
 using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;

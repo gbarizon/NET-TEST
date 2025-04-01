@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker\Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker.csproj" />
+    <ProjectReference Include="..\..\..\Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker\Ambev.DeveloperEvaluation.MessageBroker.csproj" />
     <ProjectReference Include="..\Ambev.DeveloperEvaluation.Domain\Ambev.DeveloperEvaluation.Domain.csproj" />
   </ItemGroup>
 

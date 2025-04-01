@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Adapters.Driven.MessageBrokers.MessageBrocker
+namespace Ambev.DeveloperEvaluation.MessageBroker
 {
     public class FakeMessageBroker : IMessageBroker
     {
