@@ -30,7 +30,11 @@ public class Program
             builder.AddBasicHealthChecks();
             builder.Services.AddSwaggerGen();
 
-            // Debug: mostra a string de conexão definida (deve vir da variável de ambiente)
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(8080);                                            
+            });
+
             var conn = builder.Configuration.GetConnectionString("DefaultConnection");
             Console.WriteLine($"[DEBUG] Connection string: {conn}");
 
@@ -38,15 +42,8 @@ public class Program
             options.UseNpgsql(
                 conn,
                 x => x.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
-            )
-        );
-
-            //builder.Services.AddDbContext<DefaultContext>(options =>
-            //    options.UseNpgsql(
-            //        builder.Configuration.GetConnectionString("DefaultConnection"),
-            //        b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")                    
-            //    )
-            //);
+                )
+            );
 
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
@@ -87,6 +84,7 @@ public class Program
         catch (Exception ex)
         {
             Log.Fatal(ex, "Application terminated unexpectedly");
+            throw;
         }
         finally
         {

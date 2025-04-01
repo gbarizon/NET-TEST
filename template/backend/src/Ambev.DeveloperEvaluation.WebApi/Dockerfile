@@ -31,11 +31,8 @@ RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 ENV ASPNETCORE_ENVIRONMENT=Development
-#ENV ConnectionStrings__DefaultConnection="Host=ambev.developerevaluation.database;Port=5432;Database=developer_evaluation;Username=developer;Password=ev@luAt10n"
-
-#COPY . .
 WORKDIR /app/src/Ambev.DeveloperEvaluation.WebApi
 COPY ../../entrypoint.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
-#USER app
+
 ENTRYPOINT ["./entrypoint.sh"]
