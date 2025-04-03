@@ -1,3 +1,34 @@
+#Cloando o repositório
+
+git clone https://github.com/gbarizon/NET-TEST.git
+cd NET-TEST/template/backend
+
+#Subindo a aplicação com Docker
+
+docker-compose up --build
+
+Esse comando:
+
+	Sobe a API (.NET)
+
+	Sobe o PostgreSQL, Redis e MongoDB
+
+	Aplica automaticamente as migrations
+
+	Aguarda o banco estar disponível antes de iniciar a API
+
+#Acessando a documentação Swagger
+Após subir tudo, acesse no navegador:
+
+	http://localhost:8080/swagger
+
+	Aqui testa todos os endpoints de forma interativa.
+
+
+#Testes com xUnit  (template/backend/tests/Ambev.DeveloperEvaluation.Tests)
+
+dotnet test
+
 # Developer Evaluation Project
 
 `READ CAREFULLY`
